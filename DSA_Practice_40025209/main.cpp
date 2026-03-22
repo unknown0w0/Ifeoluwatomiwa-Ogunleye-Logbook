@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 #include "Array.h"
 #include "LinearList.h"
 #include "LinkedList.h"
@@ -9,6 +10,9 @@
 #include "Deque.h"
 #include "BinaryTree.h"
 #include "Integer.h"
+#include "HashTable.h"
+#include "Graph.h"
+#include "Sorting.h"
 
 using namespace std;
 
@@ -18,6 +22,7 @@ void printInt(const int& x) {
 
 int main() {
 
+    // --- Array Demo ---
     cout << "=== Array ADT ===\n";
     Array<int> arr(5);           // fixed size of 5
     arr.store(0, 10);
@@ -162,6 +167,8 @@ int main() {
     // --- Binary Tree (AVL) Demo ---
     cout << "=== Binary Tree (AVL) ===\n";
     BinaryTree<int> tree;
+    // Insert sorted data — a plain BST would degrade to a linked list here
+    // AVL rotations keep it balanced automatically
     tree.insert(10);
     tree.insert(20);
     tree.insert(30);
@@ -176,6 +183,68 @@ int main() {
     cout << "PostOrder: "; tree.postOrder(printInt); cout << "\n";
     tree.remove(40);
     cout << "After removing 40 -> InOrder: "; tree.inOrder(printInt); cout << "\n";
+
+    // --- Hash Table Demo ---
+    cout << "\n=== Hash Table ===\n";
+    HashTable<string, int> ht;
+    ht.Insert("alice", 90);
+    ht.Insert("bob",   75);
+    ht.Insert("carol", 88);
+    ht.Insert("dave",  62);
+    ht.output();
+    cout << "tableLength: " << ht.tableLength() << "\n";
+    cout << "Retrieve alice: " << ht.Retrieve("alice") << "\n";
+    ht.Insert("alice", 95);   // update existing key
+    cout << "After update alice: " << ht.Retrieve("alice") << "\n";
+    ht.Delete("bob");
+    cout << "After deleting bob -> tableLength: " << ht.tableLength() << "\n";
+    cout << "\n";
+
+    // --- Graph Demo ---
+    cout << "=== Graph ===\n";
+    Graph<string, int> g;
+    g.addVertex("A");
+    g.addVertex("B");
+    g.addVertex("C");
+    g.addVertex("D");
+    g.addVertex("E");
+    g.addEdge("A", "B", 1);
+    g.addEdge("A", "C", 2);
+    g.addEdge("B", "D", 3);
+    g.addEdge("C", "D", 4);
+    g.addEdge("D", "E", 5);
+    g.output();
+    cout << "A adjacent to B? " << (g.adjacent("A","B") ? "yes" : "no") << "\n";
+    cout << "A adjacent to D? " << (g.adjacent("A","D") ? "yes" : "no") << "\n";
+    cout << "Neighbors of A: ";
+    for (const string& n : g.neighbors("A")) cout << n << " ";
+    cout << "\n";
+    cout << "DFS from A: ";
+    for (const string& n : g.DepthFirst("A")) cout << n << " ";
+    cout << "\n";
+    cout << "BFS from A: ";
+    for (const string& n : g.BreadthFirst("A")) cout << n << " ";
+    cout << "\n";
+    g.setEdgeValue("A", "B", 10);
+    cout << "Edge A->B value after update: " << g.getEdgeValue("A","B") << "\n";
+    cout << "\n";
+
+    // --- Sorting Demo ---
+    cout << "=== Sorting Algorithms ===\n";
+    vector<int> arr1 = {64, 25, 12, 22, 11};
+    vector<int> arr2 = arr1;
+    vector<int> arr3 = arr1;
+
+    cout << "Original:       "; printVector(arr1);
+
+    bubbleSort(arr1);
+    cout << "Bubble Sort:    "; printVector(arr1);
+
+    selectionSort(arr2);
+    cout << "Selection Sort: "; printVector(arr2);
+
+    insertionSort(arr3);
+    cout << "Insertion Sort: "; printVector(arr3);
 
     return 0;
 }
